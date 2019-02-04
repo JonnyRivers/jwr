@@ -42,6 +42,7 @@ private:
 
 	void grow()
 	{
+		// Determine capacity
 		size_t oldSize = size();
 		size_t newCapacity = oldSize;
 		if (newCapacity < 2)
@@ -49,15 +50,22 @@ private:
 		else
 			newCapacity = newCapacity + (newCapacity / 2);
 
+		// Allocate
 		T* newBegin = new T[newCapacity];
-		m_allocEnd = newBegin + newCapacity;
+		
+		// Copy
 		for (size_t i = 0 ; i < size() ; ++i)
 		{
 			newBegin[i] = m_begin[i];
 		}
-		m_contentEnd = newBegin + oldSize;
+
+		// Cleanup
 		delete[] m_begin;
+
+		// Set ne pointers
 		m_begin = newBegin;
+		m_contentEnd = newBegin + oldSize;
+		m_allocEnd = newBegin + newCapacity;
 	}
 };
 
