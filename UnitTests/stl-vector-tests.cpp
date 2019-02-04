@@ -38,5 +38,29 @@ namespace UnitTests
 			numbers.push_back(1);
 			Assert::IsTrue(numbers.capacity() >= 10);
 		}
+
+		class Person
+		{
+		public:
+			Person(const std::string& firstName, const std::string& lastName)
+				: m_firstName(firstName), m_lastName(lastName)
+			{
+			}
+
+			std::string m_firstName;
+			std::string m_lastName;
+		};
+
+		TEST_METHOD(StlVectorTestEmplaceBack)
+		{
+			std::vector<Person> people;
+			std::string firstName("Neil");
+			std::string lastName("Armstrong");
+			people.emplace_back(firstName, lastName);
+
+			Assert::AreEqual(static_cast<size_t>(1), people.size());
+			Assert::AreEqual(firstName, people[0].m_firstName);
+			Assert::AreEqual(lastName, people[0].m_lastName);
+		}
 	};
 }
