@@ -1,5 +1,7 @@
 #pragma once
 
+#include <xmemory>
+
 namespace jwr
 {
 
@@ -20,6 +22,21 @@ public:
 	size_t size() const
 	{
 		return (m_contentEnd - m_begin);
+	}
+
+	const T& operator[](size_t index)
+	{
+		return m_begin[index];
+	}
+
+	template<class... A>
+	void emplace_back(A&&... args)
+	{
+		if (m_contentEnd == m_allocEnd)
+			grow(size() + 1);
+
+		::new (static_cast<void*>(m_contentEnd)) T(std::forward<A>(args)...);
+		++m_contentEnd;
 	}
 
 	void push_back(const T& item)
