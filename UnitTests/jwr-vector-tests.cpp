@@ -27,5 +27,16 @@ namespace UnitTests
 			numbers.clear();
 			Assert::AreEqual(static_cast<size_t>(0), numbers.size());
 		}
+
+		TEST_METHOD(JwrVectorTestCapacity)
+		{
+			jwr::vector<int> numbers;
+			Assert::AreEqual(static_cast<size_t>(0), numbers.capacity());
+
+			numbers.reserve(10);
+
+			numbers.push_back(1);
+			Assert::IsTrue(numbers.capacity() >= 10);
+		}
 	};
 }

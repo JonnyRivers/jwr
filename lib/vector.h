@@ -25,10 +25,15 @@ public:
 	void push_back(const T& item)
 	{
 		if (m_contentEnd == m_allocEnd)
-			grow();
+			grow(size() + 1);
 
 		*m_contentEnd = item;
 		++m_contentEnd;
+	}
+
+	void reserve(size_t minCapacity)
+	{
+		grow(minCapacity);
 	}
 
 	void clear()
@@ -40,15 +45,18 @@ private:
 	T* m_contentEnd;
 	T* m_allocEnd;
 
-	void grow()
+	void grow(size_t minCapacity)
 	{
 		// Determine capacity
 		size_t oldSize = size();
 		size_t newCapacity = oldSize;
-		if (newCapacity < 2)
-			newCapacity = 2;
-		else
-			newCapacity = newCapacity + (newCapacity / 2);
+		while (newCapacity < minCapacity)
+		{
+			if (newCapacity < 2)
+				newCapacity = 2;
+			else
+				newCapacity = newCapacity + (newCapacity / 2);
+		}
 
 		// Allocate
 		T* newBegin = new T[newCapacity];
