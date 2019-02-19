@@ -19,6 +19,11 @@ public:
 
 	}
 
+	~vector()
+	{
+		tidy();
+	}
+
 	reference at(size_t index)
 	{
 		if (index >= size())
@@ -70,6 +75,16 @@ public:
 		m_contentEnd = m_begin;
 	}
 
+	T* data() noexcept
+	{
+		return m_begin;
+	}
+
+	const T* data() const noexcept
+	{
+		return m_begin;
+	}
+
 	template<class... A>
 	void emplace_back(A&&... args)
 	{
@@ -78,6 +93,16 @@ public:
 
 		::new (static_cast<void*>(m_contentEnd)) T(std::forward<A>(args)...);
 		++m_contentEnd;
+	}
+
+	reference front()
+	{
+		return *m_begin;
+	}
+
+	const_reference front() const
+	{
+		return *m_begin;
 	}
 
 	reference operator[](size_t index)
@@ -141,12 +166,30 @@ private:
 		}
 
 		// Cleanup
-		delete[] m_begin;
+		tidy();
 
 		// Set new pointers
 		m_begin = newBegin;
 		m_contentEnd = newBegin + oldSize;
 		m_allocEnd = newBegin + newCapacity;
+	}
+
+	void tidy()
+	{
+		if (m_begin == nullptr)
+			return;
+
+		// Call destructors
+		for (T* item = m_begin; item != m_contentEnd; ++item)
+		{
+			item->~T();
+		}
+
+		// Delete memory
+		unsigned char* allocation = reinterpret_cast<unsigned char*>(m_begin);
+		delete[] allocation;
+
+		m_begin = m_contentEnd = m_allocEnd = nullptr;
 	}
 };
 
