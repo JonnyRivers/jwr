@@ -27,6 +27,9 @@
     <ClInclude Include="..\lib\vector.h">
       <Filter>lib</Filter>
     </ClInclude>
+    <ClInclude Include="..\lib\array.h">
+      <Filter>lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -36,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="jwr-vector-tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stl-array-tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
