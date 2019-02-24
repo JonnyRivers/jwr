@@ -28,7 +28,7 @@ namespace UnitTests
 
 	unsigned int Person::m_numLiving = 0;
 
-	TEST_CLASS(StlArrayTests)
+	TEST_CLASS(PREFIX_STL_NAME(ArrayTests))
 	{
 	public:
 		TEST_METHOD(PREFIX_STL_NAME(ArrayTestCreationWithClass))
