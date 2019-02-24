@@ -82,6 +82,83 @@ namespace UnitTests
 			Assert::AreEqual(0u, Person::m_numLiving);
 		}
 
+		TEST_METHOD(StlArrayTestIterator)
+		{
+			std::array<int, 3> numbers{ {4, 9, 16} };
+			int forward_extracted_numbers[3];
+			int backward_extracted_numbers[3];
+			int modified_extracted_numbers[3];
+
+			int extract_index = 0;
+			for (std::array<int, 3>::iterator it = numbers.begin();
+				 it != numbers.end(); 
+				++it, ++extract_index)
+			{
+				forward_extracted_numbers[extract_index] = *it;
+			}
+
+			extract_index = 2;
+			for (std::array<int, 3>::iterator it = numbers.end(); 
+				 it > numbers.begin();
+				 --extract_index)
+			{
+				--it;
+				backward_extracted_numbers[extract_index] = *it;
+			}
+
+			extract_index = 0;
+			for (std::array<int, 3>::iterator it = numbers.begin();
+				it != numbers.end();
+				++it, ++extract_index)
+			{
+				modified_extracted_numbers[extract_index] = *it = extract_index;
+			}
+
+			Assert::AreEqual(4, forward_extracted_numbers[0]);
+			Assert::AreEqual(9, forward_extracted_numbers[1]);
+			Assert::AreEqual(16, forward_extracted_numbers[2]);
+
+			Assert::AreEqual(4, backward_extracted_numbers[0]);
+			Assert::AreEqual(9, backward_extracted_numbers[1]);
+			Assert::AreEqual(16, backward_extracted_numbers[2]);
+
+			Assert::AreEqual(0, modified_extracted_numbers[0]);
+			Assert::AreEqual(1, modified_extracted_numbers[1]);
+			Assert::AreEqual(2, modified_extracted_numbers[2]);
+		}
+
+		TEST_METHOD(StlArrayTestConstIterator)
+		{
+			std::array<int, 3> numbers{ {4, 9, 16} };
+			int forward_extracted_numbers[3];
+			int backward_extracted_numbers[3];
+
+			int extract_index = 0;
+			for (std::array<int, 3>::const_iterator it = numbers.cbegin();
+				it != numbers.end();
+				++it, ++extract_index)
+			{
+				forward_extracted_numbers[extract_index] = *it;
+			}
+
+			extract_index = 2;
+			for (std::array<int, 3>::const_iterator it = numbers.cend();
+				it > numbers.begin();
+				--extract_index)
+			{
+				--it;
+				backward_extracted_numbers[extract_index] = *it;
+			}
+
+			Assert::AreEqual(4, forward_extracted_numbers[0]);
+			Assert::AreEqual(9, forward_extracted_numbers[1]);
+			Assert::AreEqual(16, forward_extracted_numbers[2]);
+
+			Assert::AreEqual(4, backward_extracted_numbers[0]);
+			Assert::AreEqual(9, backward_extracted_numbers[1]);
+			Assert::AreEqual(16, backward_extracted_numbers[2]);
+		}
+
 		TEST_METHOD(StlArrayTestAt)
 		{
 			std::array<int, 3> numbers{ {4, 9, 16} };
@@ -279,6 +356,136 @@ namespace UnitTests
 			Assert::AreEqual(1, more_numbers.at(0));
 			Assert::AreEqual(2, more_numbers.at(1));
 			Assert::AreEqual(3, more_numbers.at(2));
+		}
+
+		TEST_METHOD(StlArrayTestEqualityOperator)
+		{
+			std::array<int, 3> some_numbers{ {1, 2, 3} };
+			std::array<int, 3> same_numbers{ {1, 2, 3} };
+			std::array<int, 3> different_numbers{ {2, 4, 9} };
+
+			Assert::IsTrue(some_numbers == same_numbers);
+			Assert::IsFalse(some_numbers == different_numbers);
+		}
+
+		TEST_METHOD(StlArrayTestInequalityOperator)
+		{
+			std::array<int, 3> some_numbers{ {1, 2, 3} };
+			std::array<int, 3> same_numbers{ {1, 2, 3} };
+			std::array<int, 3> different_numbers{ {2, 4, 9} };
+
+			Assert::IsFalse(some_numbers != same_numbers);
+			Assert::IsTrue(some_numbers != different_numbers);
+		}
+
+		TEST_METHOD(StlArrayTestLessThanOperator)
+		{
+			std::array<int, 3> some_numbers{ {1, 2, 3} };
+			std::array<int, 3> same_numbers{ {1, 2, 3} };
+			std::array<int, 3> immediately_smaller_numbers{ {-3, 2, 3} };
+			std::array<int, 3> eventually_smaller_numbers{ {1, 2, 2} };
+			std::array<int, 3> immediately_greater_numbers{ {6, 2, 3} };
+			std::array<int, 3> eventually_greater_numbers{ {1, 2, 4} };
+
+			Assert::IsFalse(some_numbers < same_numbers);
+			Assert::IsFalse(some_numbers < immediately_smaller_numbers);
+			Assert::IsFalse(some_numbers < eventually_smaller_numbers);
+			Assert::IsTrue(some_numbers < immediately_greater_numbers);
+			Assert::IsTrue(some_numbers < eventually_greater_numbers);
+		}
+
+		TEST_METHOD(StlArrayTestLessThanOrEqualOperator)
+		{
+			std::array<int, 3> some_numbers{ {1, 2, 3} };
+			std::array<int, 3> same_numbers{ {1, 2, 3} };
+			std::array<int, 3> immediately_smaller_numbers{ {-3, 2, 3} };
+			std::array<int, 3> eventually_smaller_numbers{ {1, 2, 2} };
+			std::array<int, 3> immediately_greater_numbers{ {6, 2, 3} };
+			std::array<int, 3> eventually_greater_numbers{ {1, 2, 4} };
+
+			Assert::IsTrue(some_numbers <= same_numbers);
+			Assert::IsFalse(some_numbers <= immediately_smaller_numbers);
+			Assert::IsFalse(some_numbers <= eventually_smaller_numbers);
+			Assert::IsTrue(some_numbers <= immediately_greater_numbers);
+			Assert::IsTrue(some_numbers <= eventually_greater_numbers);
+		}
+
+		TEST_METHOD(StlArrayTestGreaterThanOperator)
+		{
+			std::array<int, 3> some_numbers{ {1, 2, 3} };
+			std::array<int, 3> same_numbers{ {1, 2, 3} };
+			std::array<int, 3> immediately_smaller_numbers{ {-3, 2, 3} };
+			std::array<int, 3> eventually_smaller_numbers{ {1, 2, 2} };
+			std::array<int, 3> immediately_greater_numbers{ {6, 2, 3} };
+			std::array<int, 3> eventually_greater_numbers{ {1, 2, 4} };
+
+			Assert::IsFalse(some_numbers > same_numbers);
+			Assert::IsTrue(some_numbers > immediately_smaller_numbers);
+			Assert::IsTrue(some_numbers > eventually_smaller_numbers);
+			Assert::IsFalse(some_numbers > immediately_greater_numbers);
+			Assert::IsFalse(some_numbers > eventually_greater_numbers);
+		}
+
+		TEST_METHOD(StlArrayTestGreaterThanOrEqualOperator)
+		{
+			std::array<int, 3> some_numbers{ {1, 2, 3} };
+			std::array<int, 3> same_numbers{ {1, 2, 3} };
+			std::array<int, 3> immediately_smaller_numbers{ {-3, 2, 3} };
+			std::array<int, 3> eventually_smaller_numbers{ {1, 2, 2} };
+			std::array<int, 3> immediately_greater_numbers{ {6, 2, 3} };
+			std::array<int, 3> eventually_greater_numbers{ {1, 2, 4} };
+
+			Assert::IsTrue(some_numbers >= same_numbers);
+			Assert::IsTrue(some_numbers >= immediately_smaller_numbers);
+			Assert::IsTrue(some_numbers >= eventually_smaller_numbers);
+			Assert::IsFalse(some_numbers >= immediately_greater_numbers);
+			Assert::IsFalse(some_numbers >= eventually_greater_numbers);
+		}
+
+		TEST_METHOD(StlArrayTestNonMemberGet)
+		{
+			std::array<int, 3> some_numbers{ {1, 2, 3} };
+
+			Assert::AreEqual(1, std::get<0>(some_numbers));
+			Assert::AreEqual(2, std::get<1>(some_numbers));
+			Assert::AreEqual(3, std::get<2>(some_numbers));
+		}
+
+		TEST_METHOD(StlArrayTestNonMemberSwap)
+		{
+			std::array<int, 3> some_numbers{ {1, 2, 3} };
+			std::array<int, 3> more_numbers{ {2, 4, 9} };
+
+			std::swap(some_numbers, more_numbers);
+
+			Assert::AreEqual(2, some_numbers.at(0));
+			Assert::AreEqual(4, some_numbers.at(1));
+			Assert::AreEqual(9, some_numbers.at(2));
+
+			Assert::AreEqual(1, more_numbers.at(0));
+			Assert::AreEqual(2, more_numbers.at(1));
+			Assert::AreEqual(3, more_numbers.at(2));
+		}
+
+		TEST_METHOD(StlArrayTestTupleSize)
+		{
+			std::array<int, 3> some_numbers{ {1, 2, 3} };
+
+			std::size_t size = std::tuple_size<std::array<int, 3>>::value;
+
+			Assert::AreEqual(3u, size);
+		}
+
+		TEST_METHOD(StlArrayTestTupleType)
+		{
+			std::array<int, 3> some_numbers{ {1, 2, 3} };
+
+			using T = std::tuple_element<0, decltype(some_numbers)>::type;
+			bool is_same_as_int = std::is_same<T, int>::value;
+			bool is_same_as_float = std::is_same<T, float>::value;
+
+			Assert::IsTrue(is_same_as_int);
+			Assert::IsFalse(is_same_as_float);
 		}
 	};
 }
