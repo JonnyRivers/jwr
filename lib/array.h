@@ -4,7 +4,6 @@
 
 namespace jwr
 {
-
 	template <class T>
 	class array
 	{
