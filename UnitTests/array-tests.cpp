@@ -245,7 +245,7 @@ namespace UnitTests
 			STL::array<int, 3>::iterator endIter = numbers.end();
 			std::ptrdiff_t distance = std::distance(numbers.begin(), endIter);
 
-			Assert::AreEqual(3, distance);
+			Assert::AreEqual(static_cast<std::ptrdiff_t>(3), distance);
 
 			*(--endIter) = 1;
 
@@ -258,7 +258,7 @@ namespace UnitTests
 			STL::array<int, 3>::const_iterator endIter = numbers.cend();
 			std::ptrdiff_t distance = std::distance(numbers.cbegin(), endIter);
 
-			Assert::AreEqual(3, distance);
+			Assert::AreEqual(static_cast<std::ptrdiff_t>(3), distance);
 		}
 
 		TEST_METHOD(PREFIX_STL_NAME(ArrayTestReverseBegin))
@@ -287,7 +287,7 @@ namespace UnitTests
 			std::reverse_iterator<STL::array<int, 3>::iterator> endIter = numbers.rend();
 			std::ptrdiff_t distance = std::distance(numbers.rbegin(), endIter);
 
-			Assert::AreEqual(3, distance);
+			Assert::AreEqual(static_cast<std::ptrdiff_t>(3), distance);
 
 			*(--endIter) = 1;
 
@@ -300,7 +300,7 @@ namespace UnitTests
 			std::reverse_iterator<STL::array<int, 3>::const_iterator> endIter = numbers.crend();
 			std::ptrdiff_t distance = std::distance(numbers.crbegin(), endIter);
 
-			Assert::AreEqual(3, distance);
+			Assert::AreEqual(static_cast<std::ptrdiff_t>(3), distance);
 		}
 
 		TEST_METHOD(PREFIX_STL_NAME(ArrayTestEmpty))
@@ -317,8 +317,8 @@ namespace UnitTests
 			STL::array<int, 0> no_numbers;
 			STL::array<int, 3> numbers{ {4, 9, 16} };
 
-			Assert::AreEqual(0u, no_numbers.size());
-			Assert::AreEqual(3u, numbers.size());
+			Assert::AreEqual(std::size_t(0), no_numbers.size());
+			Assert::AreEqual(std::size_t(3), numbers.size());
 		}
 
 		TEST_METHOD(PREFIX_STL_NAME(ArrayTestMaxSize))
@@ -326,8 +326,8 @@ namespace UnitTests
 			STL::array<int, 0> no_numbers;
 			STL::array<int, 3> numbers{ {4, 9, 16} };
 
-			Assert::AreEqual(0u, no_numbers.max_size());
-			Assert::AreEqual(3u, numbers.max_size());
+			Assert::AreEqual(std::size_t(0), no_numbers.max_size());
+			Assert::AreEqual(std::size_t(3), numbers.max_size());
 		}
 
 		TEST_METHOD(PREFIX_STL_NAME(ArrayTestFill))
@@ -471,7 +471,7 @@ namespace UnitTests
 
 			std::size_t size = std::tuple_size<STL::array<int, 3>>::value;
 
-			Assert::AreEqual(3u, size);
+			Assert::AreEqual(static_cast<std::size_t>(3u), size);
 		}
 
 		TEST_METHOD(PREFIX_STL_NAME(ArrayTestTupleType))
