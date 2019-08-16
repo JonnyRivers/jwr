@@ -30,6 +30,9 @@
     <ClInclude Include="..\lib\array.h">
       <Filter>lib</Filter>
     </ClInclude>
+    <ClInclude Include="..\lib\unordered_set.h">
+      <Filter>lib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -45,6 +48,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="array-tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="stl-unordered-set-tests.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="unordered-set-tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
